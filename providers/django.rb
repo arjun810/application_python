@@ -108,6 +108,11 @@ def install_packages
   Chef::Log.info new_resource.type
   Chef::Log.info new_resource.owner
   Chef::Log.info new_resource.group
+  if File.directory? new_resource.virtualenv
+    Chef::Log.info "it exists"
+    Chef::Log.info File.stat(new_resource.virtualenv).uid
+    Chef::Log.info File.stat(new_resource.virtualenv).gid
+  end
   python_virtualenv new_resource.virtualenv do
     path new_resource.virtualenv
     owner new_resource.owner
