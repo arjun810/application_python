@@ -103,6 +103,11 @@ end
 protected
 
 def install_packages
+  Chef::Log.info new_resource
+  Chef::Log.info new_resource.virtualenv
+  Chef::Log.info new_resource.type
+  Chef::Log.info new_resource.owner
+  Chef::Log.info new_resource.group
   python_virtualenv new_resource.virtualenv do
     path new_resource.virtualenv
     owner new_resource.owner
