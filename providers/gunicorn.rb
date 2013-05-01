@@ -62,8 +62,9 @@ action :before_deploy do
     #daemon
     pid new_resource.pidfile
     #umask
-    #logfile
-    #loglevel
+    accesslog new_resource.accesslog
+    errorlog  new_resource.errorlog
+    loglevel  new_resource.loglevel
     #proc_name
   end
 
