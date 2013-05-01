@@ -28,11 +28,6 @@ action :before_compile do
 
   install_packages
 
-  django_resource = new_resource.application.sub_resources.select{|res| res.type == :django}.first
-  gunicorn_install "gunicorn-#{new_resource.application.name}" do
-    virtualenv django_resource ? django_resource.virtualenv : new_resource.virtualenv
-  end
-
   if !new_resource.restart_command
     new_resource.restart_command do
       run_context.resource_collection.find(:supervisor_service => new_resource.application.name).run_action(:restart)
@@ -44,6 +39,8 @@ action :before_compile do
 end
 
 action :before_deploy do
+
+  install_gunicorn
 
   new_resource = @new_resource
 
@@ -113,6 +110,13 @@ def install_packages
       virtualenv new_resource.virtualenv
       action :install
     end
+  end
+end
+
+def install_gunicorn
+  django_resource = new_resource.application.sub_resources.select{|res| res.type == :django}.first
+  gunicorn_install "gunicorn-#{new_resource.application.name}" do
+    virtualenv django_resource ? django_resource.virtualenv : new_resource.virtualenv
   end
 end
 
